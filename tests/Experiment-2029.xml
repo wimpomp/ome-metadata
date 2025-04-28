@@ -1,0 +1,121 @@
+<OME xmlns="http://www.openmicroscopy.org/Schemas/OME/2016-06" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmicroscopy.org/Schemas/OME/2016-06 http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd">
+  <Experimenter ID="Experimenter:0" UserName="zeiss"/>
+  <Instrument ID="Instrument:0">
+    <Microscope Type="Inverted"/>
+    <Detector Model="HDCamC15440-20UP-50" ID="Detector:HamamatsuCamera"/>
+    <Detector Model="HDCamC15440-20UP-50" ID="Detector:HamamatsuCamera#2"/>
+    <Objective Model="EC Plan-Neofluar 10x/0.30" ID="Objective:1" Immersion="Air" LensNA="0.3" NominalMagnification="10.0" WorkingDistance="5600.0" WorkingDistanceUnit="µm"/>
+    <FilterSet ID="FilterSet:1">
+      <ExcitationFilterRef ID="Filter:1"/>
+      <ExcitationFilterRef ID="Filter:3"/>
+      <ExcitationFilterRef ID="Filter:5"/>
+      <ExcitationFilterRef ID="Filter:7"/>
+      <DichroicRef ID="Dichroic:1"/>
+      <EmissionFilterRef ID="Filter:2"/>
+      <EmissionFilterRef ID="Filter:4"/>
+      <EmissionFilterRef ID="Filter:6"/>
+      <EmissionFilterRef ID="Filter:8"/>
+    </FilterSet>
+    <FilterSet ID="FilterSet:2">
+      <ExcitationFilterRef ID="Filter:9"/>
+      <ExcitationFilterRef ID="Filter:11"/>
+      <ExcitationFilterRef ID="Filter:13"/>
+      <ExcitationFilterRef ID="Filter:15"/>
+      <DichroicRef ID="Dichroic:2"/>
+      <EmissionFilterRef ID="Filter:10"/>
+      <EmissionFilterRef ID="Filter:12"/>
+      <EmissionFilterRef ID="Filter:14"/>
+      <EmissionFilterRef ID="Filter:16"/>
+    </FilterSet>
+    <Filter ID="Filter:1">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:2">
+      <TransmittanceRange CutIn="420.0" CutInUnit="nm" CutOut="480.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:3">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:4">
+      <TransmittanceRange CutIn="495.0" CutInUnit="nm" CutOut="550.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:5">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:6">
+      <TransmittanceRange CutIn="575.0" CutInUnit="nm" CutOut="620.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:7">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:8">
+      <TransmittanceRange CutIn="660.0" CutInUnit="nm" CutOut="720.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:9">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:10">
+      <TransmittanceRange CutIn="420.0" CutInUnit="nm" CutOut="480.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:11">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:12">
+      <TransmittanceRange CutIn="495.0" CutInUnit="nm" CutOut="550.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:13">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:14">
+      <TransmittanceRange CutIn="575.0" CutInUnit="nm" CutOut="620.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:15">
+      <TransmittanceRange CutOut="4095.0" CutOutUnit="nm"/>
+    </Filter>
+    <Filter ID="Filter:16">
+      <TransmittanceRange CutIn="660.0" CutInUnit="nm" CutOut="720.0" CutOutUnit="nm"/>
+    </Filter>
+    <Dichroic ID="Dichroic:1"/>
+    <Dichroic ID="Dichroic:2"/>
+  </Instrument>
+  <Image ID="Image:0" Name="Experiment-2029.czi #1">
+    <AcquisitionDate>2023-11-27T13:35:29.360</AcquisitionDate>
+    <ExperimenterRef ID="Experimenter:0"/>
+    <InstrumentRef ID="Instrument:0"/>
+    <ObjectiveSettings ID="Objective:1" Medium="Air" RefractiveIndex="1.000293"/>
+    <StageLabel Name="Scene position #0" X="-0.1" XUnit="µm" Y="0.0" YUnit="µm" Z="0.0" ZUnit="µm"/>
+    <Pixels ID="Pixels:0" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="1280" SizeY="1280" SizeZ="1" SizeC="2" SizeT="10" PhysicalSizeX="0.6310679611650485" PhysicalSizeXUnit="µm" PhysicalSizeY="0.6310679611650485" PhysicalSizeYUnit="µm" TimeIncrement="1.015" TimeIncrementUnit="s">
+      <Channel ID="Channel:0:0" Name="Hamamatsu Camera" SamplesPerPixel="1" IlluminationType="Epifluorescence" AcquisitionMode="Other" ExcitationWavelength="488.0" ExcitationWavelengthUnit="nm" EmissionWavelength="597.5" EmissionWavelengthUnit="nm" Fluor="Dye1" Color="10040319">
+        <DetectorSettings ID="Detector:HamamatsuCamera" Gain="0.0" Binning="1x1"/>
+        <FilterSetRef ID="FilterSet:1"/>
+        <LightPath/>
+      </Channel>
+      <Channel ID="Channel:0:1" Name="Hamamatsu Camera #2" SamplesPerPixel="1" IlluminationType="Epifluorescence" AcquisitionMode="Other" ExcitationWavelength="488.0" ExcitationWavelengthUnit="nm" Fluor="Dye2" Color="-16776961">
+        <DetectorSettings ID="Detector:HamamatsuCamera#2" Binning="1x1"/>
+        <FilterSetRef ID="FilterSet:2"/>
+        <LightPath/>
+      </Channel>
+      <MetadataOnly/>
+      <Plane TheZ="0" TheT="0" TheC="0" DeltaT="0.2760000228881836" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="0" TheC="1" DeltaT="0.40600013732910156" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="1" TheC="0" DeltaT="0.2780001163482666" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="1" TheC="1" DeltaT="1.4070000648498535" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="2" TheC="0" DeltaT="0.28100013732910156" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="2" TheC="1" DeltaT="2.4110000133514404" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="3" TheC="0" DeltaT="0.28299999237060547" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="3" TheC="1" DeltaT="3.4079999923706055" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="4" TheC="0" DeltaT="0.40600013732910156" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="4" TheC="1" DeltaT="4.4079999923706055" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="5" TheC="0" DeltaT="1.4070000648498535" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="5" TheC="1" DeltaT="5.4090001583099365" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="6" TheC="0" DeltaT="2.4110000133514404" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="6" TheC="1" DeltaT="6.4100000858306885" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="7" TheC="0" DeltaT="3.4079999923706055" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="7" TheC="1" DeltaT="7.4100000858306885" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="8" TheC="0" DeltaT="4.4079999923706055" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="8" TheC="1" DeltaT="8.41100001335144" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="9" TheC="0" DeltaT="5.4090001583099365" DeltaTUnit="s" ExposureTime="27.32513" ExposureTimeUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+      <Plane TheZ="0" TheT="9" TheC="1" DeltaT="9.41100001335144" DeltaTUnit="s" PositionX="-0.1" PositionXUnit="µm" PositionY="0.0" PositionYUnit="µm" PositionZ="0.0" PositionZUnit="µm"/>
+    </Pixels>
+  </Image>
+</OME>

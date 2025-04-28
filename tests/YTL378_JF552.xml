@@ -1,0 +1,106 @@
+<OME xmlns="http://www.openmicroscopy.org/Schemas/OME/2016-06" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmicroscopy.org/Schemas/OME/2016-06 http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd">
+  <Instrument ID="Instrument:0">
+    <Microscope Type="Other"/>
+    <Objective ID="Objective:0:0" Correction="Other" Immersion="Other"/>
+    <Filter ID="Filter:0:0"/>
+    <Filter ID="Filter:0:1"/>
+  </Instrument>
+  <Instrument ID="Instrument:1">
+    <Microscope Type="Other"/>
+    <Objective ID="Objective:1:0" Correction="Other" Immersion="Other"/>
+    <Filter ID="Filter:1:0"/>
+    <Filter ID="Filter:1:1"/>
+  </Instrument>
+  <Instrument ID="Instrument:2">
+    <Microscope Type="Other"/>
+    <Objective ID="Objective:2:0" Correction="Other" Immersion="Other"/>
+    <Filter ID="Filter:2:0"/>
+    <Filter ID="Filter:2:1"/>
+  </Instrument>
+  <Instrument ID="Instrument:3">
+    <Microscope Type="Other"/>
+    <Objective ID="Objective:3:0" Correction="Other" Immersion="Other"/>
+    <Filter ID="Filter:3:0"/>
+    <Filter ID="Filter:3:1"/>
+  </Instrument>
+  <Image ID="Image:0" Name="Image001">
+    <AcquisitionDate>2018-10-09T13:14:54</AcquisitionDate>
+    <InstrumentRef ID="Instrument:0"/>
+    <ObjectiveSettings ID="Objective:0:0"/>
+    <Pixels ID="Pixels:0" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="1024" SizeY="1024" SizeZ="1" SizeC="2" SizeT="1" PhysicalSizeX="0.1" PhysicalSizeXUnit="µm" PhysicalSizeY="0.1" PhysicalSizeYUnit="µm">
+      <Channel ID="Channel:0:0" SamplesPerPixel="1" Color="16711935">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:0:0"/>
+        </LightPath>
+      </Channel>
+      <Channel ID="Channel:0:1" SamplesPerPixel="1" Color="-16776961">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:0:1"/>
+        </LightPath>
+      </Channel>
+      <MetadataOnly/>
+      <Plane TheZ="0" TheT="0" TheC="0" DeltaT="0.0" DeltaTUnit="s"/>
+      <Plane TheZ="0" TheT="0" TheC="1" DeltaT="0.7779998779296875" DeltaTUnit="s"/>
+    </Pixels>
+  </Image>
+  <Image ID="Image:1" Name="Image002">
+    <AcquisitionDate>2018-10-09T13:53:56</AcquisitionDate>
+    <InstrumentRef ID="Instrument:1"/>
+    <ObjectiveSettings ID="Objective:1:0"/>
+    <Pixels ID="Pixels:1" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="1024" SizeY="1024" SizeZ="1" SizeC="2" SizeT="1" PhysicalSizeX="0.1" PhysicalSizeXUnit="µm" PhysicalSizeY="0.1" PhysicalSizeYUnit="µm">
+      <Channel ID="Channel:1:0" SamplesPerPixel="1" Color="16711935">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:1:0"/>
+        </LightPath>
+      </Channel>
+      <Channel ID="Channel:1:1" SamplesPerPixel="1" Color="-16776961">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:1:1"/>
+        </LightPath>
+      </Channel>
+      <MetadataOnly/>
+      <Plane TheZ="0" TheT="0" TheC="0" DeltaT="0.0" DeltaTUnit="s"/>
+      <Plane TheZ="0" TheT="0" TheC="1" DeltaT="0.7840003967285156" DeltaTUnit="s"/>
+    </Pixels>
+  </Image>
+  <Image ID="Image:2" Name="Image003">
+    <AcquisitionDate>2018-10-09T13:54:44</AcquisitionDate>
+    <InstrumentRef ID="Instrument:2"/>
+    <ObjectiveSettings ID="Objective:2:0"/>
+    <Pixels ID="Pixels:2" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="1024" SizeY="1024" SizeZ="1" SizeC="2" SizeT="1" PhysicalSizeX="0.1" PhysicalSizeXUnit="µm" PhysicalSizeY="0.1" PhysicalSizeYUnit="µm">
+      <Channel ID="Channel:2:0" SamplesPerPixel="1" Color="16711935">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:2:0"/>
+        </LightPath>
+      </Channel>
+      <Channel ID="Channel:2:1" SamplesPerPixel="1" Color="-16776961">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:2:1"/>
+        </LightPath>
+      </Channel>
+      <MetadataOnly/>
+      <Plane TheZ="0" TheT="0" TheC="0" DeltaT="0.0" DeltaTUnit="s"/>
+      <Plane TheZ="0" TheT="0" TheC="1" DeltaT="0.7699985504150391" DeltaTUnit="s"/>
+    </Pixels>
+  </Image>
+  <Image ID="Image:3" Name="Image004">
+    <AcquisitionDate>2018-10-09T13:55:44</AcquisitionDate>
+    <InstrumentRef ID="Instrument:3"/>
+    <ObjectiveSettings ID="Objective:3:0"/>
+    <Pixels ID="Pixels:3" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="1024" SizeY="1024" SizeZ="1" SizeC="2" SizeT="1" PhysicalSizeX="0.1" PhysicalSizeXUnit="µm" PhysicalSizeY="0.1" PhysicalSizeYUnit="µm">
+      <Channel ID="Channel:3:0" SamplesPerPixel="1" Color="16711935">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:3:0"/>
+        </LightPath>
+      </Channel>
+      <Channel ID="Channel:3:1" SamplesPerPixel="1" Color="-16776961">
+        <LightPath>
+          <EmissionFilterRef ID="Filter:3:1"/>
+        </LightPath>
+      </Channel>
+      <MetadataOnly/>
+      <Plane TheZ="0" TheT="0" TheC="0" DeltaT="0.0" DeltaTUnit="s"/>
+      <Plane TheZ="0" TheT="0" TheC="1" DeltaT="0.7729988098144531" DeltaTUnit="s"/>
+    </Pixels>
+  </Image>
+</OME>

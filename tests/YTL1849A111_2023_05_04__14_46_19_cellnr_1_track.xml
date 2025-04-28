@@ -1,0 +1,21 @@
+<OME xmlns="http://www.openmicroscopy.org/Schemas/OME/2016-06" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmicroscopy.org/Schemas/OME/2016-06 http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd">
+  <Image ID="Image:0" Name="YTL1849A111_2023_05_04__14_46_19_cellnr_1_track.tif">
+    <AcquisitionDate>2023-05-10T21:20:56</AcquisitionDate>
+    <Description/>
+    <Pixels ID="Pixels:0" DimensionOrder="XYCZT" Type="uint16" SignificantBits="16" Interleaved="false" BigEndian="false" SizeX="400" SizeY="100" SizeZ="1" SizeC="4" SizeT="241" PhysicalSizeX="0.0970873786407767" PhysicalSizeXUnit="µm" PhysicalSizeY="0.0970873786407767" PhysicalSizeYUnit="µm">
+      <Channel ID="Channel:0:0" SamplesPerPixel="1">
+        <LightPath/>
+      </Channel>
+      <Channel ID="Channel:0:1" SamplesPerPixel="1">
+        <LightPath/>
+      </Channel>
+      <Channel ID="Channel:0:2" SamplesPerPixel="1">
+        <LightPath/>
+      </Channel>
+      <Channel ID="Channel:0:3" SamplesPerPixel="1">
+        <LightPath/>
+      </Channel>
+      <MetadataOnly/>
+    </Pixels>
+  </Image>
+</OME>

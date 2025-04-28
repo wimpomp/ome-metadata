@@ -1,0 +1,12 @@
+<OME xmlns="http://www.openmicroscopy.org/Schemas/OME/2016-06" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmicroscopy.org/Schemas/OME/2016-06 http://www.openmicroscopy.org/Schemas/OME/2016-06/ome.xsd">
+  <Image ID="Image:0" Name="test.tif">
+    <AcquisitionDate>2025-01-29T14:42:42</AcquisitionDate>
+    <Description/>
+    <Pixels ID="Pixels:0" DimensionOrder="XYCZT" Type="int8" SignificantBits="8" Interleaved="false" BigEndian="false" SizeX="2" SizeY="2" SizeZ="1" SizeC="1" SizeT="1">
+      <Channel ID="Channel:0:0" SamplesPerPixel="1">
+        <LightPath/>
+      </Channel>
+      <MetadataOnly/>
+    </Pixels>
+  </Image>
+</OME>
