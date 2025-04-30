@@ -1,8 +1,11 @@
+use anyhow::{Result, anyhow};
+use enum_utils::{FromStr, IterVariants};
 #[cfg(feature = "python")]
 use pyo3::types::{PyDict, PyInt, PyString};
 #[cfg(feature = "python")]
 use pyo3::{Bound, IntoPyObject, PyErr, PyResult, Python};
 use serde::{Deserialize, Serialize};
+use std::cmp::PartialEq;
 
 #[cfg(feature = "python")]
 macro_rules! impl_enum_into_py_object {
@@ -82,13 +85,6 @@ impl_enum_into_py_object!(
     PixelType,
     ShapeFillRuleType,
     ShapeFontStyleType
-    UnitsElectricPotentialType,
-    UnitsFrequencyType,
-    UnitsLengthType,
-    UnitsPowerType,
-    UnitsPressureType,
-    UnitsTemperatureType,
-    UnitsTimeType,
 );
 
 #[cfg(feature = "python")]
@@ -148,15 +144,15 @@ pub struct Arc {
     #[serde(default, rename = "@Power")]
     pub power: Option<f32>,
     #[serde(default = "Arc::default_power_unit", rename = "@PowerUnit")]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "@Type")]
     pub r#type: Option<ArcType>,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Arc {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::W
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::W
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -262,7 +258,7 @@ pub struct Channel {
         default = "Channel::default_pinhole_size_unit",
         rename = "@PinholeSizeUnit"
     )]
-    pub pinhole_size_unit: UnitsLengthType,
+    pub pinhole_size_unit: UnitsLength,
     #[serde(default, rename = "@AcquisitionMode")]
     pub acquisition_mode: Option<ChannelAcquisitionModeType>,
     #[serde(default, rename = "@ContrastMethod")]
@@ -273,14 +269,14 @@ pub struct Channel {
         default = "Channel::default_excitation_wavelength_unit",
         rename = "@ExcitationWavelengthUnit"
     )]
-    pub excitation_wavelength_unit: UnitsLengthType,
+    pub excitation_wavelength_unit: UnitsLength,
     #[serde(default, rename = "@EmissionWavelength")]
     pub emission_wavelength: Option<f32>,
     #[serde(
         default = "Channel::default_emission_wavelength_unit",
         rename = "@EmissionWavelengthUnit"
     )]
-    pub emission_wavelength_unit: UnitsLengthType,
+    pub emission_wavelength_unit: UnitsLength,
     #[serde(default, rename = "@Fluor")]
     pub fluor: Option<String>,
     #[serde(default, rename = "@NDFilter")]
@@ -301,17 +297,17 @@ pub struct Channel {
     pub light_path: Option<LightPath>,
 }
 impl Channel {
-    pub fn default_pinhole_size_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_pinhole_size_unit() -> UnitsLength {
+        UnitsLength::um
     }
     pub fn default_color() -> i32 {
         0
     }
-    pub fn default_excitation_wavelength_unit() -> UnitsLengthType {
-        UnitsLengthType::nm
+    pub fn default_excitation_wavelength_unit() -> UnitsLength {
+        UnitsLength::nm
     }
-    pub fn default_emission_wavelength_unit() -> UnitsLengthType {
-        UnitsLengthType::nm
+    pub fn default_emission_wavelength_unit() -> UnitsLength {
+        UnitsLength::nm
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -447,7 +443,7 @@ pub struct Detector {
     #[serde(default, rename = "@Voltage")]
     pub voltage: Option<f32>,
     #[serde(default = "Detector::default_voltage_unit", rename = "@VoltageUnit")]
-    pub voltage_unit: UnitsElectricPotentialType,
+    pub voltage_unit: UnitsElectricPotential,
     #[serde(default, rename = "@Offset")]
     pub offset: Option<f32>,
     #[serde(default, rename = "@Zoom")]
@@ -462,8 +458,8 @@ pub struct Detector {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Detector {
-    pub fn default_voltage_unit() -> UnitsElectricPotentialType {
-        UnitsElectricPotentialType::V
+    pub fn default_voltage_unit() -> UnitsElectricPotential {
+        UnitsElectricPotential::V
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -481,7 +477,7 @@ pub struct DetectorSettings {
         default = "DetectorSettings::default_voltage_unit",
         rename = "@VoltageUnit"
     )]
-    pub voltage_unit: UnitsElectricPotentialType,
+    pub voltage_unit: UnitsElectricPotential,
     #[serde(default, rename = "@Zoom")]
     pub zoom: Option<f32>,
     #[serde(default, rename = "@ReadOutRate")]
@@ -490,18 +486,18 @@ pub struct DetectorSettings {
         default = "DetectorSettings::default_read_out_rate_unit",
         rename = "@ReadOutRateUnit"
     )]
-    pub read_out_rate_unit: UnitsFrequencyType,
+    pub read_out_rate_unit: UnitsFrequency,
     #[serde(default, rename = "@Binning")]
     pub binning: Option<BinningType>,
     #[serde(default, rename = "@Integration")]
     pub integration: Option<i32>,
 }
 impl DetectorSettings {
-    pub fn default_voltage_unit() -> UnitsElectricPotentialType {
-        UnitsElectricPotentialType::V
+    pub fn default_voltage_unit() -> UnitsElectricPotential {
+        UnitsElectricPotential::V
     }
-    pub fn default_read_out_rate_unit() -> UnitsFrequencyType {
-        UnitsFrequencyType::Hz
+    pub fn default_read_out_rate_unit() -> UnitsFrequency {
+        UnitsFrequency::Hz
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -582,7 +578,7 @@ pub struct Ellipse {
         default = "Ellipse::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -592,7 +588,7 @@ pub struct Ellipse {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Ellipse::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -619,11 +615,11 @@ pub struct Ellipse {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Ellipse {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -747,15 +743,15 @@ pub struct Filament {
     #[serde(default, rename = "@Power")]
     pub power: Option<f32>,
     #[serde(default = "Filament::default_power_unit", rename = "@PowerUnit")]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "@Type")]
     pub r#type: Option<FilamentType>,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Filament {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::W
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::W
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -894,15 +890,15 @@ pub struct GenericExcitationSource {
         default = "GenericExcitationSource::default_power_unit",
         rename = "@PowerUnit"
     )]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
     #[serde(default, rename = "Map")]
     pub map: Option<MapType>,
 }
 impl GenericExcitationSource {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::W
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::W
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -948,14 +944,14 @@ pub struct ImagingEnvironment {
         default = "ImagingEnvironment::default_temperature_unit",
         rename = "@TemperatureUnit"
     )]
-    pub temperature_unit: UnitsTemperatureType,
+    pub temperature_unit: UnitsTemperature,
     #[serde(default, rename = "@AirPressure")]
     pub air_pressure: Option<f32>,
     #[serde(
         default = "ImagingEnvironment::default_air_pressure_unit",
         rename = "@AirPressureUnit"
     )]
-    pub air_pressure_unit: UnitsPressureType,
+    pub air_pressure_unit: UnitsPressure,
     #[serde(default, rename = "@Humidity")]
     pub humidity: Option<f32>,
     #[serde(default, rename = "@CO2Percent")]
@@ -964,11 +960,11 @@ pub struct ImagingEnvironment {
     pub map: Option<MapType>,
 }
 impl ImagingEnvironment {
-    pub fn default_temperature_unit() -> UnitsTemperatureType {
-        UnitsTemperatureType::C
+    pub fn default_temperature_unit() -> UnitsTemperature {
+        UnitsTemperature::C
     }
-    pub fn default_air_pressure_unit() -> UnitsPressureType {
-        UnitsPressureType::atm
+    pub fn default_air_pressure_unit() -> UnitsPressure {
+        UnitsPressure::atm
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1008,7 +1004,7 @@ pub struct Label {
         default = "Label::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -1018,7 +1014,7 @@ pub struct Label {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Label::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -1041,11 +1037,11 @@ pub struct Label {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Label {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1064,7 +1060,7 @@ pub struct Laser {
     #[serde(default, rename = "@Power")]
     pub power: Option<f32>,
     #[serde(default = "Laser::default_power_unit", rename = "@PowerUnit")]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "@Type")]
     pub r#type: Option<LaserType>,
     #[serde(default, rename = "@LaserMedium")]
@@ -1072,7 +1068,7 @@ pub struct Laser {
     #[serde(default, rename = "@Wavelength")]
     pub wavelength: Option<f32>,
     #[serde(default = "Laser::default_wavelength_unit", rename = "@WavelengthUnit")]
-    pub wavelength_unit: UnitsLengthType,
+    pub wavelength_unit: UnitsLength,
     #[serde(default, rename = "@FrequencyMultiplication")]
     pub frequency_multiplication: Option<i32>,
     #[serde(default, rename = "@Tuneable")]
@@ -1087,21 +1083,21 @@ pub struct Laser {
         default = "Laser::default_repetition_rate_unit",
         rename = "@RepetitionRateUnit"
     )]
-    pub repetition_rate_unit: UnitsFrequencyType,
+    pub repetition_rate_unit: UnitsFrequency,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
     #[serde(default, rename = "Pump")]
     pub pump: Option<AnnotationRef>,
 }
 impl Laser {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::mW
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::mW
     }
-    pub fn default_wavelength_unit() -> UnitsLengthType {
-        UnitsLengthType::nm
+    pub fn default_wavelength_unit() -> UnitsLength {
+        UnitsLength::nm
     }
-    pub fn default_repetition_rate_unit() -> UnitsFrequencyType {
-        UnitsFrequencyType::Hz
+    pub fn default_repetition_rate_unit() -> UnitsFrequency {
+        UnitsFrequency::Hz
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -1228,13 +1224,13 @@ pub struct LightEmittingDiode {
         default = "LightEmittingDiode::default_power_unit",
         rename = "@PowerUnit"
     )]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl LightEmittingDiode {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::mW
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::mW
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1265,13 +1261,13 @@ pub struct LightSourceType {
     #[serde(default, rename = "@Power")]
     pub power: Option<f32>,
     #[serde(default = "LightSourceType::default_power_unit", rename = "@PowerUnit")]
-    pub power_unit: UnitsPowerType,
+    pub power_unit: UnitsPower,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl LightSourceType {
-    pub fn default_power_unit() -> UnitsPowerType {
-        UnitsPowerType::mW
+    pub fn default_power_unit() -> UnitsPower {
+        UnitsPower::mW
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1301,11 +1297,11 @@ pub struct LightSourceSettings {
         default = "LightSourceSettings::default_wavelength_unit",
         rename = "@WavelengthUnit"
     )]
-    pub wavelength_unit: UnitsLengthType,
+    pub wavelength_unit: UnitsLength,
 }
 impl LightSourceSettings {
-    pub fn default_wavelength_unit() -> UnitsLengthType {
-        UnitsLengthType::nm
+    pub fn default_wavelength_unit() -> UnitsLength {
+        UnitsLength::nm
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1323,7 +1319,7 @@ pub struct Line {
         default = "Line::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -1333,7 +1329,7 @@ pub struct Line {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Line::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -1364,11 +1360,11 @@ pub struct Line {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Line {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1437,7 +1433,7 @@ pub struct Mask {
         default = "Mask::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -1447,7 +1443,7 @@ pub struct Mask {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Mask::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -1476,11 +1472,11 @@ pub struct Mask {
     pub bin_data: BinData,
 }
 impl Mask {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -1644,15 +1640,15 @@ pub struct Objective {
         default = "Objective::default_working_distance_unit",
         rename = "@WorkingDistanceUnit"
     )]
-    pub working_distance_unit: UnitsLengthType,
+    pub working_distance_unit: UnitsLength,
     #[serde(default, rename = "@Iris")]
     pub iris: Option<bool>,
     #[serde(default, rename = "AnnotationRef")]
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Objective {
-    pub fn default_working_distance_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_working_distance_unit() -> UnitsLength {
+        UnitsLength::um
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -1794,28 +1790,28 @@ pub struct Pixels {
         default = "Pixels::default_physical_size_x_unit",
         rename = "@PhysicalSizeXUnit"
     )]
-    pub physical_size_x_unit: UnitsLengthType,
+    pub physical_size_x_unit: UnitsLength,
     #[serde(default, rename = "@PhysicalSizeY")]
     pub physical_size_y: Option<f32>,
     #[serde(
         default = "Pixels::default_physical_size_y_unit",
         rename = "@PhysicalSizeYUnit"
     )]
-    pub physical_size_y_unit: UnitsLengthType,
+    pub physical_size_y_unit: UnitsLength,
     #[serde(default, rename = "@PhysicalSizeZ")]
     pub physical_size_z: Option<f32>,
     #[serde(
         default = "Pixels::default_physical_size_z_unit",
         rename = "@PhysicalSizeZUnit"
     )]
-    pub physical_size_z_unit: UnitsLengthType,
+    pub physical_size_z_unit: UnitsLength,
     #[serde(default, rename = "@TimeIncrement")]
     pub time_increment: Option<f32>,
     #[serde(
         default = "Pixels::default_time_increment_unit",
         rename = "@TimeIncrementUnit"
     )]
-    pub time_increment_unit: UnitsTimeType,
+    pub time_increment_unit: UnitsTime,
     #[serde(rename = "Channel")]
     pub channel: Vec<Channel>,
     #[serde(rename = "BinData")]
@@ -1828,17 +1824,17 @@ pub struct Pixels {
     pub plane: Option<Vec<Plane>>,
 }
 impl Pixels {
-    pub fn default_physical_size_x_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_physical_size_x_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_physical_size_y_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_physical_size_y_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_physical_size_z_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_physical_size_z_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_time_increment_unit() -> UnitsTimeType {
-        UnitsTimeType::s
+    pub fn default_time_increment_unit() -> UnitsTime {
+        UnitsTime::s
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -1868,46 +1864,46 @@ pub struct Plane {
     #[serde(default, rename = "@DeltaT")]
     pub delta_t: Option<f32>,
     #[serde(default = "Plane::default_delta_t_unit", rename = "@DeltaTUnit")]
-    pub delta_t_unit: UnitsTimeType,
+    pub delta_t_unit: UnitsTime,
     #[serde(default, rename = "@ExposureTime")]
     pub exposure_time: Option<f32>,
     #[serde(
         default = "Plane::default_exposure_time_unit",
         rename = "@ExposureTimeUnit"
     )]
-    pub exposure_time_unit: UnitsTimeType,
+    pub exposure_time_unit: UnitsTime,
     #[serde(default, rename = "@PositionX")]
     pub position_x: Option<f32>,
     #[serde(default = "Plane::default_position_x_unit", rename = "@PositionXUnit")]
-    pub position_x_unit: UnitsLengthType,
+    pub position_x_unit: UnitsLength,
     #[serde(default, rename = "@PositionY")]
     pub position_y: Option<f32>,
     #[serde(default = "Plane::default_position_y_unit", rename = "@PositionYUnit")]
-    pub position_y_unit: UnitsLengthType,
+    pub position_y_unit: UnitsLength,
     #[serde(default, rename = "@PositionZ")]
     pub position_z: Option<f32>,
     #[serde(default = "Plane::default_position_z_unit", rename = "@PositionZUnit")]
-    pub position_z_unit: UnitsLengthType,
+    pub position_z_unit: UnitsLength,
     #[serde(rename = "HashSHA1")]
     pub hash_sha1: Option<String>,
     #[serde(rename = "AnnotationRef")]
     pub annotation_ref: Option<AnnotationRef>,
 }
 impl Plane {
-    pub fn default_delta_t_unit() -> UnitsTimeType {
-        UnitsTimeType::s
+    pub fn default_delta_t_unit() -> UnitsTime {
+        UnitsTime::s
     }
-    pub fn default_exposure_time_unit() -> UnitsTimeType {
-        UnitsTimeType::s
+    pub fn default_exposure_time_unit() -> UnitsTime {
+        UnitsTime::s
     }
-    pub fn default_position_x_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_position_x_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_position_y_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_position_y_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_position_z_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_position_z_unit() -> UnitsLength {
+        UnitsLength::um
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1931,14 +1927,14 @@ pub struct Plate {
         default = "Plate::default_well_origin_x_unit",
         rename = "@WellOriginXUnit"
     )]
-    pub well_origin_x_unit: UnitsLengthType,
+    pub well_origin_x_unit: UnitsLength,
     #[serde(default, rename = "@WellOriginY")]
     pub well_origin_y: Option<f32>,
     #[serde(
         default = "Plate::default_well_origin_y_unit",
         rename = "@WellOriginYUnit"
     )]
-    pub well_origin_y_unit: UnitsLengthType,
+    pub well_origin_y_unit: UnitsLength,
     #[serde(default, rename = "@Rows")]
     pub rows: Option<i32>,
     #[serde(default, rename = "@Columns")]
@@ -1955,11 +1951,11 @@ pub struct Plate {
     pub plate_acquisition: Vec<PlateAcquisition>,
 }
 impl Plate {
-    pub fn default_well_origin_x_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_well_origin_x_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_well_origin_y_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_well_origin_y_unit() -> UnitsLength {
+        UnitsLength::um
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -1997,7 +1993,7 @@ pub struct Polygon {
         default = "Polygon::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -2007,7 +2003,7 @@ pub struct Polygon {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Polygon::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -2028,11 +2024,11 @@ pub struct Polygon {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Polygon {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -2050,7 +2046,7 @@ pub struct Polyline {
         default = "Polyline::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -2060,7 +2056,7 @@ pub struct Polyline {
     #[serde(default, rename = "@FontSize")]
     pub font_size: Option<i32>,
     #[serde(default = "Polyline::default_font_size_unit", rename = "@FontSizeUnit")]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -2085,11 +2081,11 @@ pub struct Polyline {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Polyline {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -2153,7 +2149,7 @@ pub struct Rectangle {
         default = "Rectangle::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -2166,7 +2162,7 @@ pub struct Rectangle {
         default = "Rectangle::default_font_size_unit",
         rename = "@FontSizeUnit"
     )]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -2193,11 +2189,11 @@ pub struct Rectangle {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl Rectangle {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -2255,7 +2251,7 @@ pub struct ShapeType {
         default = "ShapeType::default_stroke_width_unit",
         rename = "@StrokeWidthUnit"
     )]
-    pub stroke_width_unit: UnitsLengthType,
+    pub stroke_width_unit: UnitsLength,
     #[serde(default, rename = "@StrokeDashArray")]
     pub stroke_dash_array: Option<String>,
     #[serde(default, rename = "@Text")]
@@ -2268,7 +2264,7 @@ pub struct ShapeType {
         default = "ShapeType::default_font_size_unit",
         rename = "@FontSizeUnit"
     )]
-    pub font_size_unit: UnitsLengthType,
+    pub font_size_unit: UnitsLength,
     #[serde(default, rename = "@FontStyle")]
     pub font_style: Option<ShapeFontStyleType>,
     #[serde(default, rename = "@Locked")]
@@ -2287,11 +2283,11 @@ pub struct ShapeType {
     pub annotation_ref: Vec<AnnotationRef>,
 }
 impl ShapeType {
-    pub fn default_stroke_width_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_stroke_width_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
-    pub fn default_font_size_unit() -> UnitsLengthType {
-        UnitsLengthType::Pixel
+    pub fn default_font_size_unit() -> UnitsLength {
+        UnitsLength::Pixel
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -2340,25 +2336,25 @@ pub struct StageLabel {
     #[serde(default, rename = "@X")]
     pub x: Option<f32>,
     #[serde(default = "StageLabel::default_x_unit", rename = "@XUnit")]
-    pub x_unit: UnitsLengthType,
+    pub x_unit: UnitsLength,
     #[serde(default, rename = "@Y")]
     pub y: Option<f32>,
     #[serde(default = "StageLabel::default_y_unit", rename = "@YUnit")]
-    pub y_unit: UnitsLengthType,
+    pub y_unit: UnitsLength,
     #[serde(default, rename = "@Z")]
     pub z: Option<f32>,
     #[serde(default = "StageLabel::default_z_unit", rename = "@ZUnit")]
-    pub z_unit: UnitsLengthType,
+    pub z_unit: UnitsLength,
 }
 impl StageLabel {
-    pub fn default_x_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_x_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_y_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_y_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_z_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_z_unit() -> UnitsLength {
+        UnitsLength::um
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -2441,47 +2437,47 @@ pub struct TransmittanceRange {
         default = "TransmittanceRange::default_cut_in_unit",
         rename = "@CutInUnit"
     )]
-    pub cut_in_unit: UnitsLengthType,
+    pub cut_in_unit: UnitsLength,
     #[serde(default, rename = "@CutOut")]
     pub cut_out: Option<f32>,
     #[serde(
         default = "TransmittanceRange::default_cut_out_unit",
         rename = "@CutOutUnit"
     )]
-    pub cut_out_unit: UnitsLengthType,
+    pub cut_out_unit: UnitsLength,
     #[serde(default, rename = "@CutInTolerance")]
     pub cut_in_tolerance: Option<f32>,
     #[serde(
         default = "TransmittanceRange::default_cut_in_tolerance_unit",
         rename = "@CutInToleranceUnit"
     )]
-    pub cut_in_tolerance_unit: UnitsLengthType,
+    pub cut_in_tolerance_unit: UnitsLength,
     #[serde(default, rename = "@CutOutTolerance")]
     pub cut_out_tolerance: Option<f32>,
     #[serde(
         default = "TransmittanceRange::default_cut_out_tolerance_unit",
         rename = "@CutOutToleranceUnit"
     )]
-    pub cut_out_tolerance_unit: UnitsLengthType,
+    pub cut_out_tolerance_unit: UnitsLength,
     #[serde(default, rename = "@Transmittance")]
     pub transmittance: Option<f32>,
 }
 impl TransmittanceRange {
-    pub fn default_cut_in_unit() -> UnitsLengthType {
-        UnitsLengthType::m
+    pub fn default_cut_in_unit() -> UnitsLength {
+        UnitsLength::m
     }
-    pub fn default_cut_out_unit() -> UnitsLengthType {
-        UnitsLengthType::m
+    pub fn default_cut_out_unit() -> UnitsLength {
+        UnitsLength::m
     }
-    pub fn default_cut_in_tolerance_unit() -> UnitsLengthType {
-        UnitsLengthType::m
+    pub fn default_cut_in_tolerance_unit() -> UnitsLength {
+        UnitsLength::m
     }
-    pub fn default_cut_out_tolerance_unit() -> UnitsLengthType {
-        UnitsLengthType::m
+    pub fn default_cut_out_tolerance_unit() -> UnitsLength {
+        UnitsLength::m
     }
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsElectricPotentialType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsElectricPotential {
     YV,
     ZV,
     EV,
@@ -2505,8 +2501,8 @@ pub enum UnitsElectricPotentialType {
     zV,
     yV,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsFrequencyType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsFrequency {
     YHz,
     ZHz,
     EHz,
@@ -2530,8 +2526,8 @@ pub enum UnitsFrequencyType {
     zHz,
     yHz,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsLengthType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsLength {
     Ym,
     Zm,
     Em,
@@ -2581,8 +2577,8 @@ pub enum UnitsLengthType {
     #[serde(rename = "reference frame")]
     ReferenceFrame,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsPowerType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsPower {
     YW,
     ZW,
     EW,
@@ -2606,8 +2602,8 @@ pub enum UnitsPowerType {
     zW,
     yW,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsPressureType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsPressure {
     YPa,
     ZPa,
     EPa,
@@ -2643,8 +2639,8 @@ pub enum UnitsPressureType {
     #[serde(rename = "mm Hg")]
     mmHg,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsTemperatureType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsTemperature {
     #[serde(rename = "°C")]
     C,
     #[serde(rename = "°F")]
@@ -2654,8 +2650,8 @@ pub enum UnitsTemperatureType {
     #[serde(rename = "°R")]
     R,
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum UnitsTimeType {
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, FromStr, IterVariants)]
+pub enum UnitsTime {
     Ys,
     Zs,
     Es,
@@ -2722,14 +2718,14 @@ pub struct WellSample {
         default = "WellSample::default_position_x_unit",
         rename = "@PositionXUnit"
     )]
-    pub position_x_unit: UnitsLengthType,
+    pub position_x_unit: UnitsLength,
     #[serde(default, rename = "@PositionY")]
     pub position_y: Option<f32>,
     #[serde(
         default = "WellSample::default_position_y_unit",
         rename = "@PositionYUnit"
     )]
-    pub position_y_unit: UnitsLengthType,
+    pub position_y_unit: UnitsLength,
     #[serde(default, rename = "@Timepoint")]
     pub timepoint: Option<String>,
     #[serde(rename = "@Index")]
@@ -2738,11 +2734,11 @@ pub struct WellSample {
     pub image_ref: Option<AnnotationRef>,
 }
 impl WellSample {
-    pub fn default_position_x_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_position_x_unit() -> UnitsLength {
+        UnitsLength::um
     }
-    pub fn default_position_y_unit() -> UnitsLengthType {
-        UnitsLengthType::um
+    pub fn default_position_y_unit() -> UnitsLength {
+        UnitsLength::um
     }
 }
 #[cfg_attr(feature = "python", derive(IntoPyObject))]
@@ -2763,3 +2759,263 @@ pub struct XmlAnnotation {
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct XmlAnnotationValue;
+
+pub trait Convert: PartialEq {
+    /// conversion factor between this and SI value
+    fn as_si(&self) -> Result<f64>;
+
+    /// convert a value with this unit into another unit
+    fn convert(&self, unit: &Self, value: f64) -> Result<f64> {
+        if self == unit {
+            Ok(value)
+        } else {
+            Ok(value * self.as_si()? / unit.as_si()?)
+        }
+    }
+}
+
+macro_rules! impl_enum_variants {
+    ($($t:ty $(,)?)*) => {
+        $(
+            impl $t {
+                pub fn variants() -> Vec<Self> {
+                    Self::iter().collect::<Vec<_>>()
+                }
+            }
+        )*
+    };
+}
+
+impl_enum_variants!(
+    UnitsElectricPotential,
+    UnitsFrequency,
+    UnitsLength,
+    UnitsPower,
+    UnitsPressure,
+    UnitsTemperature,
+    UnitsTime,
+);
+
+impl Convert for UnitsElectricPotential {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsElectricPotential::YV => Ok(1e24),
+            UnitsElectricPotential::ZV => Ok(1e21),
+            UnitsElectricPotential::EV => Ok(1e18),
+            UnitsElectricPotential::PV => Ok(1e15),
+            UnitsElectricPotential::TV => Ok(1e12),
+            UnitsElectricPotential::GV => Ok(1e9),
+            UnitsElectricPotential::MV => Ok(1e6),
+            UnitsElectricPotential::kV => Ok(1e3),
+            UnitsElectricPotential::hV => Ok(1e2),
+            UnitsElectricPotential::daV => Ok(1e1),
+            UnitsElectricPotential::V => Ok(1e0),
+            UnitsElectricPotential::dV => Ok(1e-1),
+            UnitsElectricPotential::cV => Ok(1e-2),
+            UnitsElectricPotential::mV => Ok(1e-3),
+            UnitsElectricPotential::uV => Ok(1e-6),
+            UnitsElectricPotential::nV => Ok(1e-9),
+            UnitsElectricPotential::pV => Ok(1e-12),
+            UnitsElectricPotential::fV => Ok(1e-15),
+            UnitsElectricPotential::aV => Ok(1e-18),
+            UnitsElectricPotential::zV => Ok(1e-21),
+            UnitsElectricPotential::yV => Ok(1e-24),
+        }
+    }
+}
+
+impl Convert for UnitsFrequency {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsFrequency::YHz => Ok(1e24),
+            UnitsFrequency::ZHz => Ok(1e21),
+            UnitsFrequency::EHz => Ok(1e18),
+            UnitsFrequency::PHz => Ok(1e15),
+            UnitsFrequency::THz => Ok(1e12),
+            UnitsFrequency::GHz => Ok(1e9),
+            UnitsFrequency::MHz => Ok(1e6),
+            UnitsFrequency::kHz => Ok(1e3),
+            UnitsFrequency::hHz => Ok(1e2),
+            UnitsFrequency::daHz => Ok(1e1),
+            UnitsFrequency::Hz => Ok(1e0),
+            UnitsFrequency::dHz => Ok(1e-1),
+            UnitsFrequency::cHz => Ok(1e-2),
+            UnitsFrequency::mHz => Ok(1e-3),
+            UnitsFrequency::uHz => Ok(1e-6),
+            UnitsFrequency::nHz => Ok(1e-9),
+            UnitsFrequency::pHz => Ok(1e-12),
+            UnitsFrequency::fHz => Ok(1e-15),
+            UnitsFrequency::aHz => Ok(1e-18),
+            UnitsFrequency::zHz => Ok(1e-21),
+            UnitsFrequency::yHz => Ok(1e-24),
+        }
+    }
+}
+
+impl Convert for UnitsLength {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsLength::Ym => Ok(1e24),
+            UnitsLength::Zm => Ok(1e21),
+            UnitsLength::Em => Ok(1e18),
+            UnitsLength::Pm => Ok(1e15),
+            UnitsLength::Tm => Ok(1e12),
+            UnitsLength::Gm => Ok(1e9),
+            UnitsLength::Mm => Ok(1e6),
+            UnitsLength::km => Ok(1e3),
+            UnitsLength::hm => Ok(1e2),
+            UnitsLength::dam => Ok(1e1),
+            UnitsLength::m => Ok(1e0),
+            UnitsLength::dm => Ok(1e-1),
+            UnitsLength::cm => Ok(1e-2),
+            UnitsLength::mm => Ok(1e-3),
+            UnitsLength::um => Ok(1e-6),
+            UnitsLength::nm => Ok(1e-9),
+            UnitsLength::pm => Ok(1e-12),
+            UnitsLength::fm => Ok(1e-15),
+            UnitsLength::am => Ok(1e-18),
+            UnitsLength::zm => Ok(1e-21),
+            UnitsLength::ym => Ok(1e-24),
+            UnitsLength::A => Ok(1e-10),
+            UnitsLength::Thou => Ok(2.54e-5),
+            UnitsLength::Li => Ok(5e2),
+            UnitsLength::In => Ok(2.54e-2),
+            UnitsLength::Ft => Ok(3.05e-1),
+            UnitsLength::Yd => Ok(9.14e-1),
+            UnitsLength::Mi => Ok(1.609344e3),
+            UnitsLength::Ua => Ok(1.496e11),
+            UnitsLength::Ly => Ok(9.461e15),
+            UnitsLength::Pc => Ok(3.086e16),
+            UnitsLength::Pt => Ok(3.52778e-4),
+            UnitsLength::Pixel => Err(anyhow!("Size of pixel is unknown")),
+            UnitsLength::ReferenceFrame => Err(anyhow!("Size of reference frame is unknown")),
+        }
+    }
+}
+
+impl Convert for UnitsPower {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsPower::YW => Ok(1e24),
+            UnitsPower::ZW => Ok(1e21),
+            UnitsPower::EW => Ok(1e18),
+            UnitsPower::PW => Ok(1e15),
+            UnitsPower::TW => Ok(1e12),
+            UnitsPower::GW => Ok(1e9),
+            UnitsPower::MW => Ok(1e6),
+            UnitsPower::kW => Ok(1e3),
+            UnitsPower::hW => Ok(1e2),
+            UnitsPower::daW => Ok(1e1),
+            UnitsPower::W => Ok(1e0),
+            UnitsPower::dW => Ok(1e-1),
+            UnitsPower::cW => Ok(1e-2),
+            UnitsPower::mW => Ok(1e-3),
+            UnitsPower::uW => Ok(1e-6),
+            UnitsPower::nW => Ok(1e-9),
+            UnitsPower::pW => Ok(1e-12),
+            UnitsPower::fW => Ok(1e-15),
+            UnitsPower::aW => Ok(1e-18),
+            UnitsPower::zW => Ok(1e-21),
+            UnitsPower::yW => Ok(1e-24),
+        }
+    }
+}
+
+impl Convert for UnitsPressure {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsPressure::YPa => Ok(1e24),
+            UnitsPressure::ZPa => Ok(1e21),
+            UnitsPressure::EPa => Ok(1e18),
+            UnitsPressure::PPa => Ok(1e15),
+            UnitsPressure::TPa => Ok(1e12),
+            UnitsPressure::GPa => Ok(1e9),
+            UnitsPressure::MPa => Ok(1e6),
+            UnitsPressure::kPa => Ok(1e3),
+            UnitsPressure::hPa => Ok(1e2),
+            UnitsPressure::daPa => Ok(1e1),
+            UnitsPressure::Pa => Ok(1e0),
+            UnitsPressure::dPa => Ok(1e-1),
+            UnitsPressure::cPa => Ok(1e-2),
+            UnitsPressure::mPa => Ok(1e-3),
+            UnitsPressure::uPa => Ok(1e-6),
+            UnitsPressure::nPa => Ok(1e-9),
+            UnitsPressure::pPa => Ok(1e-12),
+            UnitsPressure::fPa => Ok(1e-15),
+            UnitsPressure::aPa => Ok(1e-18),
+            UnitsPressure::zPa => Ok(1e-21),
+            UnitsPressure::yPa => Ok(1e-24),
+            UnitsPressure::bar => Ok(1e5),
+            UnitsPressure::Mbar => Ok(1e11),
+            UnitsPressure::kbar => Ok(1e8),
+            UnitsPressure::dbar => Ok(1e4),
+            UnitsPressure::cbar => Ok(1e3),
+            UnitsPressure::mbar => Ok(1e2),
+            UnitsPressure::atm => Ok(1.01325e5),
+            UnitsPressure::psi => Ok(6.89476e3),
+            UnitsPressure::Torr => Ok(1.33322e3),
+            UnitsPressure::mTorr => Ok(1.33322),
+            UnitsPressure::mmHg => Ok(1.33322e2),
+        }
+    }
+}
+
+impl Convert for UnitsTemperature {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsTemperature::C => Err(anyhow!("No conversion to K by multiplication only")),
+            UnitsTemperature::F => Err(anyhow!("No conversion to K by multiplication only")),
+            UnitsTemperature::K => Ok(1e1),
+            UnitsTemperature::R => Ok(5f64 / 9f64),
+        }
+    }
+
+    fn convert(&self, unit: &Self, value: f64) -> Result<f64> {
+        match (self, unit) {
+            (UnitsTemperature::F, UnitsTemperature::C) => Ok((value - 32.) * 5. / 9.),
+            (UnitsTemperature::K, UnitsTemperature::C) => Ok(value - 273.15),
+            (UnitsTemperature::R, UnitsTemperature::C) => Ok((value * 5. / 9.) - 273.15),
+            (UnitsTemperature::C, UnitsTemperature::F) => Ok((value * 9. / 5.) + 32.),
+            (UnitsTemperature::K, UnitsTemperature::F) => Ok((value * 9. / 5.) - 459.67),
+            (UnitsTemperature::R, UnitsTemperature::F) => Ok(value - 459.67),
+            (UnitsTemperature::C, UnitsTemperature::K) => Ok(value + 273.15),
+            (UnitsTemperature::F, UnitsTemperature::K) => Ok((value + 459.67) * 5. / 9.),
+            (UnitsTemperature::R, UnitsTemperature::K) => Ok(value * 5. / 9.),
+            (UnitsTemperature::C, UnitsTemperature::R) => Ok((value + 273.15) * 9. / 5.),
+            (UnitsTemperature::F, UnitsTemperature::R) => Ok(value + 459.67),
+            (UnitsTemperature::K, UnitsTemperature::R) => Ok(value * 9. / 5.),
+            _ => Ok(value),
+        }
+    }
+}
+
+impl Convert for UnitsTime {
+    fn as_si(&self) -> Result<f64> {
+        match self {
+            UnitsTime::Ys => Ok(1e24),
+            UnitsTime::Zs => Ok(1e21),
+            UnitsTime::Es => Ok(1e18),
+            UnitsTime::Ps => Ok(1e15),
+            UnitsTime::Ts => Ok(1e12),
+            UnitsTime::Gs => Ok(1e9),
+            UnitsTime::Ms => Ok(1e6),
+            UnitsTime::ks => Ok(1e3),
+            UnitsTime::hs => Ok(1e2),
+            UnitsTime::das => Ok(1e1),
+            UnitsTime::s => Ok(1e0),
+            UnitsTime::ds => Ok(1e-1),
+            UnitsTime::cs => Ok(1e-2),
+            UnitsTime::ms => Ok(1e-3),
+            UnitsTime::us => Ok(1e-6),
+            UnitsTime::ns => Ok(1e-9),
+            UnitsTime::ps => Ok(1e-12),
+            UnitsTime::fs => Ok(1e-15),
+            UnitsTime::r#as => Ok(1e-18),
+            UnitsTime::zs => Ok(1e-21),
+            UnitsTime::ys => Ok(1e-24),
+            UnitsTime::min => Ok(6e1),
+            UnitsTime::h => Ok(3.6e2),
+            UnitsTime::d => Ok(8.64e4),
+        }
+    }
+}
