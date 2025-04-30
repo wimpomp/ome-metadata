@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from collections import UserDict, UserList
 from . import ome_metadata_rs as rs  # noqa
 
 
-class Ome(dict):
+class Ome(UserDict):
     @staticmethod
     def from_xml(xml: str) -> Ome:
         """Create the OME structure from an XML string"""
@@ -27,7 +28,7 @@ class Ome(dict):
             return new
 
 
-class OmeList(list):
+class OmeList(UserList):
     def __getitem__(self, item: int) -> Ome | OmeList | int | float | str:
         new = super().__getitem__(item)
         if isinstance(new, dict):

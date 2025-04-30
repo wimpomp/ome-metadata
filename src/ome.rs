@@ -2778,6 +2778,7 @@ macro_rules! impl_enum_variants {
     ($($t:ty $(,)?)*) => {
         $(
             impl $t {
+                /// all possible variants of this enum that can be constructed or converted into
                 pub fn variants() -> Vec<Self> {
                     Self::iter().collect::<Vec<_>>()
                 }
