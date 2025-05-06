@@ -27,6 +27,12 @@ class Ome(UserDict):
         else:
             return new
 
+    def __getstate__(self) -> dict[str, Any]:
+        return self.data
+
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        self.data = state
+
 
 class OmeList(UserList):
     def __getitem__(self, item: int) -> Ome | OmeList | int | float | str:
