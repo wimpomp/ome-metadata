@@ -1,4 +1,4 @@
-use anyhow::{Result, anyhow};
+use crate::error::Error;
 use enum_utils::{FromStr, IterVariants};
 #[cfg(feature = "python")]
 use pyo3::types::{PyDict, PyInt, PyString};
@@ -2762,10 +2762,10 @@ pub struct XmlAnnotationValue;
 
 pub trait Convert: PartialEq {
     /// conversion factor between this and SI value
-    fn as_si(&self) -> Result<f64>;
+    fn as_si(&self) -> Result<f64, Error>;
 
     /// convert a value with this unit into another unit
-    fn convert(&self, unit: &Self, value: f64) -> Result<f64> {
+    fn convert(&self, unit: &Self, value: f64) -> Result<f64, Error> {
         if self == unit {
             Ok(value)
         } else {
@@ -2798,7 +2798,7 @@ impl_enum_variants!(
 );
 
 impl Convert for UnitsElectricPotential {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsElectricPotential::YV => Ok(1e24),
             UnitsElectricPotential::ZV => Ok(1e21),
@@ -2826,7 +2826,7 @@ impl Convert for UnitsElectricPotential {
 }
 
 impl Convert for UnitsFrequency {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsFrequency::YHz => Ok(1e24),
             UnitsFrequency::ZHz => Ok(1e21),
@@ -2854,7 +2854,7 @@ impl Convert for UnitsFrequency {
 }
 
 impl Convert for UnitsLength {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsLength::Ym => Ok(1e24),
             UnitsLength::Zm => Ok(1e21),
@@ -2888,14 +2888,14 @@ impl Convert for UnitsLength {
             UnitsLength::Ly => Ok(9.461e15),
             UnitsLength::Pc => Ok(3.086e16),
             UnitsLength::Pt => Ok(3.52778e-4),
-            UnitsLength::Pixel => Err(anyhow!("Size of pixel is unknown")),
-            UnitsLength::ReferenceFrame => Err(anyhow!("Size of reference frame is unknown")),
+            UnitsLength::Pixel => Err(Error::SizeOfUnknown("pixel".to_string())),
+            UnitsLength::ReferenceFrame => Err(Error::SizeOfUnknown("reference frame".to_string())),
         }
     }
 }
 
 impl Convert for UnitsPower {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsPower::YW => Ok(1e24),
             UnitsPower::ZW => Ok(1e21),
@@ -2923,7 +2923,7 @@ impl Convert for UnitsPower {
 }
 
 impl Convert for UnitsPressure {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsPressure::YPa => Ok(1e24),
             UnitsPressure::ZPa => Ok(1e21),
@@ -2962,16 +2962,16 @@ impl Convert for UnitsPressure {
 }
 
 impl Convert for UnitsTemperature {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
-            UnitsTemperature::C => Err(anyhow!("No conversion to K by multiplication only")),
-            UnitsTemperature::F => Err(anyhow!("No conversion to K by multiplication only")),
+            UnitsTemperature::C => Err(Error::TemparatureConversion),
+            UnitsTemperature::F => Err(Error::TemparatureConversion),
             UnitsTemperature::K => Ok(1e1),
             UnitsTemperature::R => Ok(5f64 / 9f64),
         }
     }
 
-    fn convert(&self, unit: &Self, value: f64) -> Result<f64> {
+    fn convert(&self, unit: &Self, value: f64) -> Result<f64, Error> {
         match (self, unit) {
             (UnitsTemperature::F, UnitsTemperature::C) => Ok((value - 32.) * 5. / 9.),
             (UnitsTemperature::K, UnitsTemperature::C) => Ok(value - 273.15),
@@ -2991,7 +2991,7 @@ impl Convert for UnitsTemperature {
 }
 
 impl Convert for UnitsTime {
-    fn as_si(&self) -> Result<f64> {
+    fn as_si(&self) -> Result<f64, Error> {
         match self {
             UnitsTime::Ys => Ok(1e24),
             UnitsTime::Zs => Ok(1e21),

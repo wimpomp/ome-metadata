@@ -1,6 +1,6 @@
 [package]
 name = "ome-metadata"
-version = "0.2.2"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.85.1"
 authors = ["Wim Pomp <w.pomp@nki.nl>"]
@@ -19,10 +19,10 @@ name = "ome_metadata"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-anyhow = "1.0.98"
 enum-utils = "0.1.2"
 serde = { version = "1.0.219", features = ["derive"] }
-quick-xml = {  version = "0.37.5", features = ["serialize"] }
+thiserror = "2.0.16"
+quick-xml = { version = "0.38.0", features = ["serialize"] }
 
 [dependencies.pyo3]
 version = "0.24.2"

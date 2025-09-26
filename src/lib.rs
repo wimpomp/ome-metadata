@@ -1,10 +1,11 @@
 #![allow(non_camel_case_types)]
 pub mod ome;
 
+mod error;
 #[cfg(feature = "python")]
 mod py;
 
-use anyhow::{Error, Result};
+use crate::error::Error;
 pub use ome::Ome;
 use quick_xml::de::from_str;
 use std::str::FromStr;
@@ -12,7 +13,7 @@ use std::str::FromStr;
 impl FromStr for Ome {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         Ok(from_str(s)?)
     }
 }
@@ -26,7 +27,7 @@ mod tests {
         ($($name:ident: $file:expr $(,)?)*) => {
             $(
                 #[test]
-                fn $name() -> Result<()> {
+                fn $name() -> Result<(), Error> {
                     let file = read_to_string(format!("tests/{}.xml", $file))?;
                     let _ome: Ome = file.parse()?;
                     Ok(())

@@ -1,11 +1,10 @@
 use crate::Ome;
 use crate::ome::{
-    Convert, UnitsElectricPotential, UnitsFrequency, UnitsLength, UnitsPower,
-    UnitsPressure, UnitsTemperature, UnitsTime,
+    Convert, UnitsElectricPotential, UnitsFrequency, UnitsLength, UnitsPower, UnitsPressure,
+    UnitsTemperature, UnitsTime,
 };
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-
 
 macro_rules! impl_enum_into_py_object {
     ($($s:ident: $t:ty $(,)?)*) => {
@@ -28,7 +27,7 @@ macro_rules! impl_enum_into_py_object {
                 /// convert a value between units
                 fn convert(&self, unit: &str, value: f64) -> PyResult<f64> {
                     match unit.parse() {
-                        Ok(unit) => Ok(self.inner.convert(&unit, value)?),
+                        Ok(unit) => Ok(self.inner.convert(&unit, value).map_err(|e| PyErr::new::<PyValueError, _>(format!("{}", e)))?),
                         Err(_) => Err(PyErr::new::<PyValueError, _>(format!("Invalid unit: {}", unit)))
                     }
                 }
@@ -46,7 +45,7 @@ macro_rules! impl_enum_into_py_object {
                 fn __str__(&self) -> String {
                     format!("{:?}", self.inner)
                 }
-                
+
                 fn __getnewargs__(&self) -> (String,) {
                     (format!("{:?}", self.inner),)
                 }
@@ -87,7 +86,8 @@ fn ome_metadata_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     #[pyfn(m)]
     fn ome(text: &str) -> PyResult<Ome> {
-        Ok(text.parse()?)
+        text.parse()
+            .map_err(|e| PyErr::new::<PyValueError, _>(format!("{}", e)))
     }
 
     Ok(())
