@@ -6,6 +6,14 @@ use crate::ome::{
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
+
+impl From<crate::error::Error> for PyErr {
+    fn from(err: crate::error::Error) -> PyErr {
+        PyErr::new::<PyValueError, _>(err.to_string())
+    }
+}
+
+
 macro_rules! impl_enum_into_py_object {
     ($($s:ident: $t:ty $(,)?)*) => {
         $(
@@ -27,7 +35,7 @@ macro_rules! impl_enum_into_py_object {
                 /// convert a value between units
                 fn convert(&self, unit: &str, value: f64) -> PyResult<f64> {
                     match unit.parse() {
-                        Ok(unit) => Ok(self.inner.convert(&unit, value).map_err(|e| PyErr::new::<PyValueError, _>(format!("{}", e)))?),
+                        Ok(unit) => Ok(self.inner.convert(&unit, value)?),
                         Err(_) => Err(PyErr::new::<PyValueError, _>(format!("Invalid unit: {}", unit)))
                     }
                 }
@@ -86,8 +94,7 @@ fn ome_metadata_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     #[pyfn(m)]
     fn ome(text: &str) -> PyResult<Ome> {
-        text.parse()
-            .map_err(|e| PyErr::new::<PyValueError, _>(format!("{}", e)))
+        Ok(text.parse()?)
     }
 
     Ok(())

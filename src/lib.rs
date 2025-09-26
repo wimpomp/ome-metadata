@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 pub mod ome;
 
-mod error;
+pub mod error;
 #[cfg(feature = "python")]
 mod py;
 
