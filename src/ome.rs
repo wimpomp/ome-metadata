@@ -1584,30 +1584,30 @@ pub struct Ome {
     pub creator: Option<String>,
     #[serde(rename = "Rights")]
     pub rights: Option<Rights>,
-    #[serde(rename = "Project")]
-    pub project: Option<Vec<Project>>,
-    #[serde(rename = "Dataset")]
-    pub dataset: Option<Vec<Dataset>>,
-    #[serde(rename = "Folder")]
-    pub folder: Option<Vec<Folder>>,
-    #[serde(rename = "Experiment")]
-    pub experiment: Option<Vec<Experiment>>,
-    #[serde(rename = "Plate")]
-    pub plate: Option<Vec<Plate>>,
-    #[serde(rename = "Screen")]
-    pub screen: Option<Vec<Screen>>,
-    #[serde(rename = "Experimenter")]
-    pub experimenter: Option<Vec<Experimenter>>,
-    #[serde(rename = "ExperimenterGroup")]
-    pub experimenter_group: Option<Vec<ExperimenterGroup>>,
-    #[serde(rename = "Instrument")]
-    pub instrument: Option<Vec<Instrument>>,
-    #[serde(rename = "Image")]
-    pub image: Option<Vec<Image>>,
+    #[serde(default, rename = "Project")]
+    pub project: Vec<Project>,
+    #[serde(default, rename = "Dataset")]
+    pub dataset: Vec<Dataset>,
+    #[serde(default, rename = "Folder")]
+    pub folder: Vec<Folder>,
+    #[serde(default, rename = "Experiment")]
+    pub experiment: Vec<Experiment>,
+    #[serde(default, rename = "Plate")]
+    pub plate: Vec<Plate>,
+    #[serde(default, rename = "Screen")]
+    pub screen: Vec<Screen>,
+    #[serde(default, rename = "Experimenter")]
+    pub experimenter: Vec<Experimenter>,
+    #[serde(default, rename = "ExperimenterGroup")]
+    pub experimenter_group: Vec<ExperimenterGroup>,
+    #[serde(default, rename = "Instrument")]
+    pub instrument: Vec<Instrument>,
+    #[serde(default, rename = "Image")]
+    pub image: Vec<Image>,
     #[serde(rename = "StructuredAnnotations")]
     pub structured_annotations: Option<StructuredAnnotations>,
-    #[serde(rename = "ROI")]
-    pub roi: Option<Vec<Roi>>,
+    #[serde(default, rename = "ROI")]
+    pub roi: Vec<Roi>,
     #[serde(rename = "BinaryOnly")]
     pub binary_only: Option<OmeBinaryOnly>,
 }
@@ -1812,16 +1812,16 @@ pub struct Pixels {
         rename = "@TimeIncrementUnit"
     )]
     pub time_increment_unit: UnitsTime,
-    #[serde(rename = "Channel")]
-    pub channel: Option<Vec<Channel>>,
-    #[serde(rename = "BinData")]
-    pub bin_data: Option<Vec<BinData>>,
-    #[serde(rename = "TiffData")]
-    pub tiff_data: Option<Vec<TiffData>>,
+    #[serde(default, rename = "Channel")]
+    pub channel: Vec<Channel>,
+    #[serde(default, rename = "BinData")]
+    pub bin_data: Vec<BinData>,
+    #[serde(default, rename = "TiffData")]
+    pub tiff_data: Vec<TiffData>,
     #[serde(rename = "MetadataOnly")]
     pub metadata_only: Option<MetadataOnly>,
-    #[serde(rename = "Plane")]
-    pub plane: Option<Vec<Plane>>,
+    #[serde(default, rename = "Plane")]
+    pub plane: Vec<Plane>,
 }
 impl Pixels {
     pub fn default_physical_size_x_unit() -> UnitsLength {

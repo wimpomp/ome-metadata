@@ -48,5 +48,6 @@ mod tests {
         i: "beads_2023_05_04__19_00_22"
         j: "20230511-p53-4x-CMV-1min-4h-01-Airyscan Processing-01"
         k: "YTL1849A131_2023_05_04__13_36_36"
+        l: "multi-channel.ome"
     );
 }
