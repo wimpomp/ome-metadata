@@ -1817,7 +1817,7 @@ pub struct Pixels {
     #[serde(rename = "BinData")]
     pub bin_data: Option<BinData>,
     #[serde(rename = "TiffData")]
-    pub tiff_data: Option<TiffData>,
+    pub tiff_data: Vec<TiffData>,
     #[serde(rename = "MetadataOnly")]
     pub metadata_only: Option<MetadataOnly>,
     #[serde(rename = "Plane")]

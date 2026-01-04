@@ -1,6 +1,6 @@
 [package]
 name = "ome-metadata"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 rust-version = "1.85.1"
 authors = ["Wim Pomp <w.pomp@nki.nl>"]
@@ -8,6 +8,7 @@ license = "MIT"
 description = "Ome metadata as a rust/python structure."
 homepage = "https://github.com/wimpomp/ome-metadata"
 repository = "https://github.com/wimpomp/ome-metadata"
+documentation = "https://docs.rs/ome-metadata"
 readme = "README.md"
 keywords = ["bioformats", "imread", "ome", "metadata"]
 categories = ["multimedia::images", "science"]
@@ -19,13 +20,13 @@ name = "ome_metadata"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-enum-utils = "0.1.2"
-serde = { version = "1.0.219", features = ["derive"] }
-thiserror = "2.0.16"
-quick-xml = { version = "0.38.0", features = ["serialize"] }
+enum-utils = "0.1"
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+quick-xml = { version = "0.38", features = ["serialize"] }
 
 [dependencies.pyo3]
-version = "0.24.2"
+version = "0.27"
 features = ["extension-module", "abi3-py310", "generate-import-lib", "anyhow"]
 optional = true
 

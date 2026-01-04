@@ -6,13 +6,11 @@ use crate::ome::{
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-
 impl From<crate::error::Error> for PyErr {
     fn from(err: crate::error::Error) -> PyErr {
         PyErr::new::<PyValueError, _>(err.to_string())
     }
 }
-
 
 macro_rules! impl_enum_into_py_object {
     ($($s:ident: $t:ty $(,)?)*) => {
@@ -81,6 +79,11 @@ impl_enum_into_py_object! {
     Time: UnitsTime
 }
 
+#[pyfunction]
+fn ome(text: &str) -> PyResult<Ome> {
+    Ok(text.parse()?)
+}
+
 #[pymodule]
 #[pyo3(name = "ome_metadata_rs")]
 fn ome_metadata_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -91,11 +94,6 @@ fn ome_metadata_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Pressure>()?;
     m.add_class::<Temperature>()?;
     m.add_class::<Time>()?;
-
-    #[pyfn(m)]
-    fn ome(text: &str) -> PyResult<Ome> {
-        Ok(text.parse()?)
-    }
-
+    m.add_function(wrap_pyfunction!(ome, m)?)?;
     Ok(())
 }
