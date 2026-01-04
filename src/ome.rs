@@ -1813,11 +1813,11 @@ pub struct Pixels {
     )]
     pub time_increment_unit: UnitsTime,
     #[serde(rename = "Channel")]
-    pub channel: Vec<Channel>,
+    pub channel: Option<Vec<Channel>>,
     #[serde(rename = "BinData")]
-    pub bin_data: Option<BinData>,
+    pub bin_data: Option<Vec<BinData>>,
     #[serde(rename = "TiffData")]
-    pub tiff_data: Vec<TiffData>,
+    pub tiff_data: Option<Vec<TiffData>>,
     #[serde(rename = "MetadataOnly")]
     pub metadata_only: Option<MetadataOnly>,
     #[serde(rename = "Plane")]
